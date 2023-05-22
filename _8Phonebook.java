@@ -1,50 +1,57 @@
 package lab;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class _8Phonebook {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-	/* input Scanner for reading input for the program */
-	private static Scanner inputScanner;
+        // Read the number of entries
+        int numEntries = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline
 
-	public static void main(String[] args) {
-		/* Create a phone book Map */
-		Map<String, String> phoneBook = new HashMap<String, String>();
-		/* Create the input Scanner instance */
-		inputScanner = new Scanner(System.in);
-		
-		/* Read the number of input phone numbers */
-		int numFriends = inputScanner.nextInt();
-		/* Go to the next line of input */
-		inputScanner.nextLine();
-		
-		/* Loop thru the number of friends, reading the name and phone number, and adding to the phoneBook */
-		for (int i = 0; i < numFriends; i++) {
-			/* Read the name of the friend */
-			String name = inputScanner.nextLine();
-			/* Read the phone number */
-			String phone = inputScanner.nextLine();
-			/* Put the name and phone number into the phoneBook */
-			phoneBook.put(name, phone);
-		}
+        // Create a HashMap to store the phone book entries
+        HashMap<String, String> phoneBook = new HashMap<>();
 
-		/* Loop while there is still more input data */
-		while (inputScanner.hasNext()) {
-			/* Read the person to search for a phone number */
-			String inputName = inputScanner.nextLine();
+        // Read the entries and populate the phone book
+        for (int i = 0; i < numEntries; i++) {
+            String name = scanner.nextLine();
+            String phoneNumber = scanner.nextLine();
 
-			/* Does the name exist in the phone Book */
-			if (phoneBook.containsKey(inputName)) {
-				/* Yes, print out the name and phone number */
-				System.out.println(inputName + "=" + phoneBook.get(inputName));
-			} else {
-				/* Print out error message if not found */
-				System.out.println("Not found");
-			}
+            // Check if the name contains only lowercase alphabets
+            if (!name.matches("[a-z]+" )) {
+                System.out.println("Invalid name format: Only lowercase alphabets are allowed.");
+                continue;
+            }
 
-		}
+            // Check if the phone number contains up to 8 digits
+            if (!phoneNumber.matches("\\d{1,8}")) {
+                System.out.println("Invalid phone number format: Phone number should contain up to 8 digits.");
+                continue;
+            }
 
-	}
+            phoneBook.put(name, phoneNumber);
+        }
 
+        // Process the queries until end-of-file
+        while (scanner.hasNextLine()) {
+            String query = scanner.nextLine();
+
+            // Check if the query contains only lowercase alphabets
+            if (!query.matches("[a-z]+")) {
+                System.out.println("Invalid query format: Only lowercase alphabets are allowed.");
+                continue;
+            }
+
+            // Check if the query exists in the phone book
+            if (phoneBook.containsKey(query)) {
+                String phoneNumber = phoneBook.get(query);
+                System.out.println(phoneNumber);
+            } else {
+                System.out.println("Not found");
+            }
+        }
+
+        scanner.close();
+    }
 }
